@@ -1,0 +1,27 @@
+{
+  "name": "channels",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "custom": "babel ../src/js/ -d ../js/ --config-file ./.babelrc --ignore maps.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserslist": [
+    "last 20 version, safari >= 7, ie >= 11"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-async-to-generator": "^7.8.3",
+    "@babel/plugin-transform-classes": "^7.9.5",
+    "@babel/preset-env": "^7.9.5",
+    "babel-plugin-array-includes": "^2.0.3",
+    "babel-plugin-transform-async-to-promises": "^0.8.15",
+    "babel-preset-minify": "^0.5.1",
+    "core-js": "^3.6.5"
+  },
+  "dependencies": {}
+}
