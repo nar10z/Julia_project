@@ -5,9 +5,9 @@ class Generator {
      * @param {Number} minLength
      * */
     constructor(examples, order = 1, minLength = 4) {
+        this.minLength = minLength;
         this.examples = examples;
         this.order = order;
-        this.minLength = minLength;
         this.used = [];
 
 
@@ -33,13 +33,20 @@ class Generator {
         this.data = data;
     }
 
+    /**
+     * Генерация нового названия
+     * @return {String}
+     * */
     genName() {
         let s = "";
 
+        // выполнить хотябы один раз
         do {
+            // берем случайный пример
             let n = this.getRandom(0, this.examples.length);
             let name = this.examples[n];
             let nameLength = name.length;
+            // берем случайную его часть
             s = name.substr(this.getRandom(0, (nameLength - this.order) - 1), this.order);
 
             while (s.length < nameLength) {
@@ -53,6 +60,7 @@ class Generator {
             }
 
 
+            // Каждое слово с большой буквы
             if (s.indexOf(' ') > -1) {
                 let tokens = s.split(' ');
                 s = '';
@@ -85,14 +93,21 @@ class Generator {
                 s = f + l;
             }
 
-        } while (this.used.includes(s) || s.length < this.minLength);
+        } while (s.length < this.minLength);
+        // условие при котором продолжает выполнятся цикл
+        // "пока длина нового названия (переменная s) меньше минимального"
 
         this.used.push(s);
 
         return s;
     }
 
-
+    /**
+     * Получение данных из цепей по переданной строке из символов
+     *
+     * @param {String} token
+     * @return {String}
+     * */
     getLetter(token) {
         if (!(token in this.data)) {
             return '?';
@@ -104,6 +119,13 @@ class Generator {
         return letters[n];
     }
 
+    /**
+     * Получение случайного целого числа
+     *
+     * @param {Number} min
+     * @param {Number} max
+     * @return {Number}
+     * */
     getRandom(min = 0, max) {
         min = Math.ceil(min);
         max = Math.floor(max);

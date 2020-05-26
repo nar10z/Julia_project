@@ -6,8 +6,7 @@
         "targets": "last 20 version, safari >= 7, ie >= 11",
         "modules": false
       }
-    ],
-    "minify"
+    ]
   ],
   "plugins": [
     [

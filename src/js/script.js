@@ -1,5 +1,4 @@
 let gen = new Generator(examples, 2, 8);
-;
 
 $(document).ready(async function () {
     let $create_form = $('#create_form');
@@ -10,14 +9,13 @@ $(document).ready(async function () {
     $create_form.on('submit', function (e) {
         e.preventDefault();
 
-        if (!gen) {
-            alert('Данные еще не загрузились');
-            return;
-        }
-
+        // кол-во генерируемых названий
         let count = $count_word.val();
+        // минимальная длина слова
         let min_length = $min_length.val();
 
+
+        // преобразуем значение в чилсо, и ели оно NaN (Not a Number) то приравневаем его к стандартным значениям
         count = Number(count);
         if (isNaN(count)) {
             count = 1;
@@ -29,10 +27,12 @@ $(document).ready(async function () {
         }
 
 
+        // нового минимальное кол-во символов
         gen.minLength = min_length;
 
         let res = [];
         for (let i = 0; i < count; i++) {
+            // добавляем в массив результов новое сгенерируемое имя
             res.push(gen.genName())
         }
 
@@ -44,6 +44,7 @@ $(document).ready(async function () {
         html += '</ul>';
 
 
+        // Добавляем в блок с результатами новые сгенерируемые названия
         $result.html(html);
     })
 });

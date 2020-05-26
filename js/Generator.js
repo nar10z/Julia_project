@@ -1,1 +1,111 @@
-var Generator=function(){function a(a){var b=1<arguments.length&&void 0!==arguments[1]?arguments[1]:1,c=2<arguments.length&&void 0!==arguments[2]?arguments[2]:4;this.examples=a,this.order=b,this.minLength=c,this.used=[];var d=a.map(function(a){return a.toUpperCase()});this.examples=d;var e={};d.forEach(function(a){for(var c,d=a.length,f=0;f<d-b;f++)c=a.substr(f,b),c in e||(e[c]=[]),e[c].push(a.substr(f+b,1))}),this.data=e}var b=a.prototype;return b.genName=function genName(){var a="";do{var b=this.getRandom(0,this.examples.length),d=this.examples[b],e=d.length;for(a=d.substr(this.getRandom(0,e-this.order-1),this.order);a.length<e;){var g=a.substr(a.length-this.order,this.order),h=this.getLetter(g);if("?"!==h)a+=this.getLetter(g);else break}if(-1<a.indexOf(" ")){var l=a.split(" ");for(var m in a="",l){var i=l[m];if(""!==i){if(1===i.length)l[m]=i.toUpperCase();else{var c=i.substr(0,1),f=i.substr(1).toLowerCase();l[m]=c+f}""!==a&&(a+=" "),a+=l[m]}}}else{var j=a.substr(0,1),k=a.substr(1).toLowerCase();a=j+k}}while(-1!==this.used.indexOf(a)||a.length<this.minLength);return this.used.push(a),a},b.getLetter=function getLetter(a){if(!(a in this.data))return"?";var b=JSON.parse(JSON.stringify(this.data[a])),c=this.getRandom(0,b.length);return b[c]},b.getRandom=function getRandom(){var a=Math.floor,b=Math.ceil,c=0<arguments.length&&void 0!==arguments[0]?arguments[0]:0,d=1<arguments.length?arguments[1]:void 0;return c=b(c),d=a(d),a(Math.random()*(d-c))+c},a}();
+var Generator = function () {
+  function Generator(examples) {
+    var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    var minLength = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 4;
+    this.minLength = minLength;
+    this.examples = examples;
+    this.order = order;
+    this.used = [];
+    var arr = examples.map(function (el) {
+      return el.toUpperCase();
+    });
+    this.examples = arr;
+    var data = {};
+    arr.forEach(function (word) {
+      var l = word.length;
+
+      for (var letter = 0; letter < l - order; letter++) {
+        var token = word.substr(letter, order);
+
+        if (!(token in data)) {
+          data[token] = [];
+        }
+
+        data[token].push(word.substr(letter + order, 1));
+      }
+    });
+    this.data = data;
+  }
+
+  var _proto = Generator.prototype;
+
+  _proto.genName = function genName() {
+    var s = "";
+
+    do {
+      var n = this.getRandom(0, this.examples.length);
+      var name = this.examples[n];
+      var nameLength = name.length;
+      s = name.substr(this.getRandom(0, nameLength - this.order - 1), this.order);
+
+      while (s.length < nameLength) {
+        var token = s.substr(s.length - this.order, this.order);
+        var c = this.getLetter(token);
+
+        if (c !== '?') {
+          s += this.getLetter(token);
+        } else {
+          break;
+        }
+      }
+
+      if (s.indexOf(' ') > -1) {
+        var tokens = s.split(' ');
+        s = '';
+
+        for (var i in tokens) {
+          var _token = tokens[i];
+
+          if (_token === '') {
+            continue;
+          }
+
+          if (_token.length === 1) {
+            tokens[i] = _token.toUpperCase();
+          } else {
+            var f = _token.substr(0, 1);
+
+            var l = _token.substr(1).toLowerCase();
+
+            tokens[i] = f + l;
+          }
+
+          if (s !== '') {
+            s += ' ';
+          }
+
+          s += tokens[i];
+        }
+      } else {
+        var _f = s.substr(0, 1);
+
+        var _l = s.substr(1).toLowerCase();
+
+        s = _f + _l;
+      }
+    } while (s.length < this.minLength);
+
+    this.used.push(s);
+    return s;
+  };
+
+  _proto.getLetter = function getLetter(token) {
+    if (!(token in this.data)) {
+      return '?';
+    }
+
+    var letters = JSON.parse(JSON.stringify(this.data[token]));
+    var n = this.getRandom(0, letters.length);
+    return letters[n];
+  };
+
+  _proto.getRandom = function getRandom() {
+    var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var max = arguments.length > 1 ? arguments[1] : undefined;
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  return Generator;
+}();

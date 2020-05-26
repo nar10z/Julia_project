@@ -1,1 +1,65 @@
-function _await(a,b,c){return c?b?b(a):a:(a&&a.then||(a=Promise.resolve(a)),b?a.then(b):a)}var gen=new Generator(examples,2,8);function _async(a){return function(){for(var b=[],c=0;c<arguments.length;c++)b[c]=arguments[c];try{return Promise.resolve(a.apply(this,b))}catch(a){return Promise.reject(a)}}}$(document).ready(_async(function(){var a=$("#create_form"),b=$("#count_word"),c=$("#min_length"),d=$("#result");return a.on("submit",function(a){if(a.preventDefault(),!gen)return void alert("\u0414\u0430\u043D\u043D\u044B\u0435 \u0435\u0449\u0435 \u043D\u0435 \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u043B\u0438\u0441\u044C");var e=b.val(),f=c.val();e=+e,isNaN(e)&&(e=1),f=+f,isNaN(f)&&(f=4),gen.minLength=f;for(var g=[],h=0;h<e;h++)g.push(gen.genName());var j="<ul>";g.forEach(function(a){j+="<li>".concat(a,"</li>")}),j+="</ul>",d.html(j)}),_await()}));
+function _await(value, then, direct) {
+  if (direct) {
+    return then ? then(value) : value;
+  }
+
+  if (!value || !value.then) {
+    value = Promise.resolve(value);
+  }
+
+  return then ? value.then(then) : value;
+}
+
+var gen = new Generator(examples, 2, 8);
+
+function _async(f) {
+  return function () {
+    for (var args = [], i = 0; i < arguments.length; i++) {
+      args[i] = arguments[i];
+    }
+
+    try {
+      return Promise.resolve(f.apply(this, args));
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+}
+
+$(document).ready(_async(function () {
+  var $create_form = $('#create_form');
+  var $count_word = $('#count_word');
+  var $min_length = $('#min_length');
+  var $result = $('#result');
+  $create_form.on('submit', function (e) {
+    e.preventDefault();
+    var count = $count_word.val();
+    var min_length = $min_length.val();
+    count = Number(count);
+
+    if (isNaN(count)) {
+      count = 1;
+    }
+
+    min_length = Number(min_length);
+
+    if (isNaN(min_length)) {
+      min_length = 4;
+    }
+
+    gen.minLength = min_length;
+    var res = [];
+
+    for (var i = 0; i < count; i++) {
+      res.push(gen.genName());
+    }
+
+    var html = '<ul>';
+    res.forEach(function (el) {
+      html += "<li>".concat(el, "</li>");
+    });
+    html += '</ul>';
+    $result.html(html);
+  });
+  return _await();
+}));
