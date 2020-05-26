@@ -1,23 +1,11 @@
-let gen;
+let gen = new Generator(examples, 2, 8);
+;
 
 $(document).ready(async function () {
     let $create_form = $('#create_form');
     let $count_word = $('#count_word');
     let $min_length = $('#min_length');
     let $result = $('#result');
-
-    const getExamplesNames = () => {
-        $.ajax({
-            method: 'GET',
-            url: 'examples.txt',
-        }).then(data => {
-            let examples = data.split("\n");
-            gen = new Generator(examples, 2, 8);
-
-        }).catch(err => {
-            alert(err.message)
-        });
-    };
 
     $create_form.on('submit', function (e) {
         e.preventDefault();
@@ -58,5 +46,4 @@ $(document).ready(async function () {
 
         $result.html(html);
     })
-    await getExamplesNames();
 });
